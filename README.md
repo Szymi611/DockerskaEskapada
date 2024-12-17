@@ -6,6 +6,7 @@ This project was made for academic purposes during one of our courses at the AGH
 We present security issues in Docker. We show vulnerabilities of this software and best practices related to them. Below we also include case-studies showing how to get into the server from the user level of a web application, how to escape from this container and the possibilities that open up to us after such an escape.<br />
 <br />
 
+
 <br />
 
 *** 
