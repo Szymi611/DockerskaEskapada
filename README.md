@@ -44,7 +44,7 @@ W kontenerze uruchomiona jest aplikacja webowa. Znając jej podatność omówion
 
  <br />
  
-Teraz przyjrzyj się poniższemu wyrażeniu napisanym w języku Python. Jednak najpierw użyj w konsoli programu ``hack.py``, który jest dołączony do paczki z repozytorium i liczbę, którą znalazłeś wpisz zamiast ``<Liczba_Którą_Znalazłeś>``. 
+<!-- Teraz przyjrzyj się poniższemu wyrażeniu napisanym w języku Python. Jednak najpierw użyj w konsoli programu ``hack.py``, który jest dołączony do paczki z repozytorium i liczbę, którą znalazłeś wpisz zamiast ``<Liczba_Którą_Znalazłeś>``. 
 
 > Jeżeli cię to ciekawi to poniższy kod w sprytny sposób przedostaje się
 > z obiektu napisu przez moduł ``warnings`` i klasę ``WarningMessage``
@@ -58,7 +58,7 @@ Teraz przyjrzyj się poniższemu wyrażeniu napisanym w języku Python. Jednak n
 <br />
 Spróbuj wyświetlić strukturę plików w katalogu aplikacji na serwerze.
 
-**Odpowiedź** - wyślij zrzut ekranu, który pokaże wylistowane w aplikacji wszystkie pliki i katalogi z  katalogu aplikacji na serwerze razem z użytą komendą.
+**Odpowiedź** - wyślij zrzut ekranu, który pokaże wylistowane w aplikacji wszystkie pliki i katalogi z  katalogu aplikacji na serwerze razem z użytą komendą. -->
 
 <br />
 

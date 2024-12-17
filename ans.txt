@@ -1,1 +1,15 @@
 1. http://127.0.0.1:5000/plektronika{{7*7}}
+
+Task 4
+docker run -d \
+  --name secure_container \
+  --user appuser \
+  --memory="512m" \
+  --cpus="0.5" \
+  --read-only \
+  --network=bridge \
+  --security-opt no-new-privileges \
+  --restart=always \
+  -p 5000:5000 \
+  my_secure_image
+
