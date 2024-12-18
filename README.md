@@ -2,8 +2,11 @@
 ***This project shows vulnerability how to escape from Docker container in which web application is running.*** <br />
 <br />
 ## *About*
-This project was made for academic purposes during one of our courses at the AGH University of Krakow. <br />
-We present security issues in Docker. We show vulnerabilities of this software and best practices related to them. Below we also include case-studies showing how to get into the server from the user level of a web application, how to escape from this container and the possibilities that open up to us after such an escape.<br />
+This repositorium was made for one of the courses during our studies at the AGH University of Science and Technology in Krakow (Security of web and mobile aplications).  <br />
+In our project we will present not only vulnerabilities in security of docker containers but best practise related to them.
+Below we present instructions to creating and getting into the container and escape from it. We prepared some task for better
+understanding of our presentation and project. 
+<br />
 <br />
 
 <br />
