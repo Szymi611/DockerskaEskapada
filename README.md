@@ -38,15 +38,15 @@ Wewnątrz kontenera jest uruchomiona źle skonfigurowana aplikacja webowa. Za po
 Jeżeli w wyniku wykonania przykładu zobaczysz rezultat 4, możesz przejść dalej.
  <br />
  
- <!-- W konsoli możesz skorzystać z programu `hack.py` (znajduje się w repozytorium). Wstaw do niego liczbę, którą znalazłeś zamiast `<Liczba_Którą_Znalazłeś>`.
+W konsoli możesz skorzystać z programu `hack.py` (znajduje się w repozytorium). Wstaw do niego liczbę, którą znalazłeś zamiast `<Liczba_Którą_Znalazłeś>`.
 Jeśli ciekawi Cię, jak to działa, poniższy kod w sprytny sposób przedostaje się z obiektu string przez moduł warnings i klasę WarningMessage do modułu os, który pozwala uruchamiać komendy systemowe.
 
-scss
-Kopiuj
+```
 "baiim".__class__.__base__.__subclasses__()[<Liczba_Którą_Znalazłeś>].__init__.__globals__['sys'].modules['os'].popen(<Twoja_Komenda>).read()
+```
 Spróbuj wyświetlić strukturę plików w katalogu aplikacji na serwerze.
 
-Odpowiedź - wyślij zrzut ekranu z listą plików i folderów w katalogu aplikacji oraz komendą, której użyłeś. -->
+Odpowiedź - wyślij zrzut ekranu z listą plików i folderów w katalogu aplikacji oraz komendą, której użyłeś. 
 
 <br />
 
