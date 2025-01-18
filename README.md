@@ -50,35 +50,31 @@ Odpowiedź - wyślij zrzut ekranu z listą plików i folderów w katalogu aplika
 
 <br />
 
-## *Task 2 - Docker Escape & Privilege Escalation*
+## Zadanie2. Docker Escape & Privilege Escalation*
 
 
-> **TIP** - proponujemy przejście z wykonywaniem zadań do terminala. Otwórz go w katalogu projektu.<br />
+Przed wykonaniem dalszych zadań przejdź do terminala w katalogu projektu.
 
-Ucieczkę z kontenera umożliwia nam złe skonfigurowanie kontenera przez osobę, która go tworzyła. Wciel się w taką osobę: <br />
+Niewłaściwa konfiguracja kontenera umożliwia nam ucieczkę do systemu hosta. Wciel się w rolę osoby, która tworzy taki kontener. <br />
 
-1. Spróbuj zmienić użytkownika na root-a (nie powinieneś mieć takiej możliwości - powinieneś być na koncie użytkownika ``ursus``) {**PE**}: 
+1. Spróbuj przełączyć się na użytkownika root (domyślnie nie powinno być to możliwe, ponieważ działasz w ramach konta ursus) {PE}:
 	```bash
 	su root
 	```
-2. Sprawdź listę dostępnych obrazów:
+2. Wyświetl listę dostępnych obrazów Dockera:
 	```
 	docker images
 	```
-3. Pobierz obraz Ubuntu Docker  ze zdalnego repozytorium:
+3. Pobierz obraz Ubuntu ze zdalnego repozytorium:
 	```
 	docker pull ubuntu:18.04
 	```
 
-    Przykładowe pobranie obrazu:
-    ![image](https://github.com/norka02/Docker-Escape/assets/121463460/e5f1fbfc-c4f9-4543-a6b0-f802d55b7039) 
-
-
-4. Po pobraniu sprawdź czy obraz pobrał się poprawnie:
+4. Po pobraniu sprawdź, czy obraz się poprawnie dodał:
 	```
 	docker images
 	```
-5. Poniżej zostały przedstawione dwie przykładowe możliwości stworzenia kontenera z potencjalną podatnością: <br />
+5. Poniżej pokazujemy dwa warianty uruchamiania kontenera z potencjalną podatnością: <br />
 
 	1.  
 		```
@@ -90,92 +86,80 @@ Ucieczkę z kontenera umożliwia nam złe skonfigurowanie kontenera przez osobę
 		```
 ---
 
-> ***Pierwsza opcja pozwoli nam stworzyć kontener z flagą ``--priviliged``, dzięki której będzie możliwe wyjście do systemu hosta poprzez zmontowanie partycji . W zależności od solidności zabezpieczeń serwera będzie można edytować pliki na maszynie hosta lub tylko je czytać.***
+> Pierwsza opcja tworzy kontener z flagą --privileged, co pozwala na montowanie partycji hosta bezpośrednio w kontenerze. W zależności od zabezpieczeń serwera możesz mieć możliwość odczytu bądź także edycji plików hosta.
 
-
-> **Druga opcja daje nam z reguły dużo większe możliwości jako osobie,
-> która uruchamia kontener, ale także dużo większe możliwości dla
-> potencjalnego atakującego. W skrócie montuje ona volumen z katalogu
-> ``/`` hosta do katalogu ``/host`` w kontenerze dzięki czemu możemy
-> przykładowo przesyłać pliki między hostem a kontenerem.**
+> Druga opcja z reguły daje jeszcze większe możliwości uruchamiającemu kontener (ale też większe ryzyko w razie ataku). Krótko mówiąc, montuje ona wolumen z katalogu / hosta pod /host w kontenerze, co pozwala chociażby wymieniać pliki między hostem a kontenerem.
 
 ---
 
-6. Zacznijmy od pierwszego scenariusza. 
-	Będąc na użytkowniku **ursus** uruchom kontener {**DE**}. <br />
-	Teraz jesteś wewnątrz swojego kontenera, który przed chwilą stworzyłeś. Możesz to 	sprawdzić za pomocą komend ``whoami`` oraz ``hostname``.
+6. Zacznijmy od pierwszego wariantu. 
+	Będąc zajogowanym jako **ursus** uruchom kontener {**DE**}. <br />
+	Znajdujesz się teraz wewnątrz nowego kontenera. Możesz to potwierdzić poleceniami: ``whoami`` oraz ``hostname``.
 	<br />
-Przykładowy ScreenShot znajduje się poniżej:
-![image2](https://github.com/norka02/Docker-Escape/assets/94318576/7a2266e8-ce4f-44dd-9a3d-e93341a36755) <br />
 
-	***Jak możesz zauważyć tworząc własny kontener masz w nim uprawnienia root-a. <br />***
+	***Jak widzisz, w uruchomionym przez Ciebie kontenerze posiadasz uprawnienia roota.. <br />***
 	<br />
 
 
-7. Następnie stwórz w utworzonym kontenerze katalog: <br />
+7. Utwórz w tym kontenerze folder: <br />
 	```bash
 	mkdir -p /mnt/share
 	```
-8. Oraz podmontuj odpowiednią partycję dysku do tego katalogu np. /dev/sdc: <br />
+8. Podmontuj dowolną partycję dysku, np. /dev/sdc, do nowo utworzonego katalogu: <br />
 	```bash
 	mount /dev/sdc /mnt/share
 	```
 ---
-Domyślnie polecenie mount nadaje ci prawa do zapisu i odczytu, ale jeśli wystąpiłby przykładowo taki komunikat zmień partycję dysku(chociaż i tak już udało ci się zrobić więcej niż pozwalały na to uprawnienia użytkownika ursus):
-![image3](https://github.com/norka02/Docker-Escape/assets/94318576/d1cd3e07-3672-4086-bb40-2b86b14bceb5) <br />
- Listę partycji możesz uzyskać za pomocą polecenia: <br />
+Jeśli polecenie mount nie zadziała poprawnie, być może dany dysk nie istnieje lub jest zabezpieczony. Poszukaj innej partycji.
+
+Listę wszystkich partycji sprawdzisz komendą: <br />
 ```bash
 lsblk
 ```
 ---
-9. Dzięki podmontowaniu partycji jesteśmy w stanie uzyskać dostep do struktury katalogów hosta. Sprawdź czy masz dostęp do struktury katalogów hosta:
+9. Dzięki podmontowaniu partycji jesteśmy w stanie uzyskać dostep do struktury katalogów hosta. Po zamontowaniu sprawdź zawartość zewnętrznego systemu plików:
 	```bash
 	 ls -l /mnt/share 
 	```
-	Poszperaj trochę po systemie. Może znajdziesz coś ciekawego ;). 
-	PS: Zobacz jak niewiele trzeba do wycieku danych. <br />
+	Obejrzyj nieco strukturę systemu — może trafisz na coś interesującego. <br />
 
-10. Wyjdź z kontenera za pomocą ``exit``. <br />
+10. Opuść kontener komendą ``exit``. <br />
 
 
-11. Teraz przejdźmy do scenariusza drugiego. Uruchom kontener za pomocą wcześniej podanej komendy. Następnie wylistuj strukturę katalogów w której obecnie się znajdujesz. 
-12. Spróbuj przedostać się do zewnętrznego systemu plików, odnajdź pliki ``/etc/shadow`` oraz ``/etc/passwd`` i usuń w nich elementy odpowiadające za uwierzytelnienie użytkownika root. 
+11. Teraz przejdź do drugiego scenariusza. Uruchom kontener za pomocą wspomnianej wyżej komendy. Następnie wylistuj zawartość katalogu, w którym właśnie się znajdujesz.
+12. Spróbuj przemieścić się do zewnętrznej struktury plików i odnajdź pliki ``/etc/shadow`` oraz ``/etc/passwd``. Usuń z nich sekcje odpowiedzialne za uwierzytelnienie użytkownika root.
 ---
   *Jeżeli nie masz zainstalowengo żadnego edytora tekstowego wykonaj poniższe komendy:*
   ```bash
   apt update
   ```
   
-  *Instalacja w kontenerze wybranego przez siebie edytora tekstowego (np. vim, nano):*
+  *Instalacja wybranego przez siebie edytora (np. vim, nano):*
   ```bash
   apt install vim
   ```
 ---
-13. Za pomocą edytora tekstowego otwórz plik ``/etc/shadow`` oraz ``/etc/passwd``. 
+13. Otwórz plik /etc/shadow oraz /etc/passwd w edytorze i usuń fragment dotyczący hasła roota {PE}. Powtórz to samo w obydwu plikach. 
 
 14. Trzeba usunąć część wskazującą na obecność hasła root-a w pliku passwd{**PE**}. Zrób tak samo z plikiem shadow. <br />
-	
-	![image5](https://github.com/norka02/Docker-Escape/assets/94318576/8bf49b45-925b-4c12-b7a5-9a6a5cbf5b4b)
-		![image4](https://github.com/norka02/Docker-Escape/assets/94318576/f38a79ad-7e7a-4e0b-a404-cfce4b5aaea8)
 
-15. Wyjdź z kontenera za pomocą ``exit``. <br />
+15. Wyjdź z kontenera. <br />
 
-16. Zmień użytkownika na root-a {**PE**}:
+16. Zmień użytkownika na root {**PE**}:
 	```bash
 	su root
 	```
-Brawo właśnie przejąłeś konto roota! <br />
+Gratulacje, przejąłeś konto roota!! <br />
 
-**Odpowiedź** - wyślij zrzut ekrany potwierdzający twoje uprawnienia root-a. 
+**Odpowiedź** - prześlij zrzut ekranu potwierdzający, że masz uprawnienia administratora (root).
 <br />
 
-## *Task 3 - Mini-CTF*
-Mając uprawnienia root-a możesz poruszać się bezproblemowo po systemie. Znajdź **tajny** katalog, który nie powinien znajdować się w systemie/wyróżnia się spośród pozostałych. W nim znajduje się plik z flagą. Zmodyfikuj znaleziony plik dodając swoje imię i nazwisko.
+## Zadanie3. Capture the flag*
+Będąc rootem możesz swobodnie przeglądać i modyfikować system. Odnajdź ukryty katalog, który odróżnia się od pozostałych, a w środku szukaj pliku z flagą. Następnie dodaj do niego swoje imię i nazwisko.
 
-> Flaga znajduje się w pliku tekstowym i jest oznaczona w następujący
-> sposób: ``` CTF{<flaga>} ```
+> Flaga to wpis w pliku tekstowym w formacie: ``` CTF{<flaga>} ```
 
-**Odpowiedź** - wyślij widoczną zmodyfikowaną flagę wraz z dopisanym unikalnym tekstem wymienionym wyżej oraz ścieżkę do katalogu, w którym znajduje się znaleziona flaga.  <br />
+**Odpowiedź** - prześlij zmodyfikowaną flagę (z dopisanym tekstem) oraz ścieżkę do odnalezionego katalogu.  <br />
 
 ## *Task 4 - Tworzenie Bezpiecznego Kontenera*
 Posiadając całą wiedzę zdobytą podczas prezentacji oraz poprzednich zadań zastanów się w jaki sposób możesz zabezpieczyć kontener przed różnymi wektorami ataków. Stwórz kontener, który spełnia wszystkie best-practice dot. bezpiecznego tworzenia kontenera Dockera.  <br />
