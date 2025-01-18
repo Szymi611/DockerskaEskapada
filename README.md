@@ -1,11 +1,7 @@
 # Docker Escape
-***This project shows vulnerability how to escape from Docker container in which web application is running.*** <br />
+***W tym projekcie prezentujemy przykładową lukę bezpieczeństwa, która umożliwia wydostanie się z kontenera Dockera uruchamiającego aplikację webową.*** <br />
 <br />
-## *About*
-This repositorium was made for one of the courses during our studies at the AGH University of Science and Technology in Krakow (Security of web and mobile aplications).  <br />
-In our project we will present not only vulnerabilities in security of docker containers but best practise related to them.
-Below we present instructions to creating and getting into the container and escape from it. We prepared some task for better
-understanding of our presentation and project. 
+Poniżej znajdują się instrukcje dotyczące tworzenia i uruchamiania kontenera, a także wskazówki pozwalające na tzw. “ucieczkę” z niego.
 <br />
 <br />
 
@@ -17,51 +13,40 @@ understanding of our presentation and project.
 ***
 <br />
 
-## *Task 0 - Przygotowanie środowiska*
-Aby rozpocząć wykonywanie zadań sklonujcie repozytorium za pomocą ``git clone`` lub pobierzcie paczkę zip. Będziemy używać Dockera (kontener w kontenerze  z uruchomionym serwerem ubuntu). Całość została skonfigurowana w Dockerfile.
+## *Przygotowanie środowiska*
+Na początek sklonuj repozytorium poleceniem git clone albo pobierz je w formie paczki ZIP. Do zadań będziemy używać Dockera (kontener w kontenerze, w którym działa serwer ubuntu). Całość została skonfigurowana w pliku Dockerfile.
 
-Jeżeli już posiadasz repozytorium na dysku przejdź do katalogu, w którym znajduje się plik z konfiguracją. Następnie wykonaj poniższe komendy: <br />
+Jeżeli masz już repozytorium na swoim dysku, przejdź do folderu zawierającego plik konfiguracyjny, a następnie wykonaj poniższe komendy: <br />
 
-1. Build - zbuduj kontener (może zająć chwilę w zależności od szybkości łącza):
+1. Build kontenera:
 	```bash: 
 	docker build -t ubuntu-zetor .
 	```
-2. Run - uruchom kontener w tle:
+2. Uruchomienie kontenera w tle:
 	```bash: 
 	docker run -d -p 5000:5000 --privileged --hostname ubuntu-zetor --name ubuntu-zetor ubuntu-zetor
 	```
-3. Enter - wejdź do kontenera:
+3. Wejście do kontenera:
 	```bash: 
 	docker exec -itu ursus ubuntu-zetor bash
 	```
-
-> ***TIP** - w przypadku problemów -> zrestartuj kontener*
-
 <br />
 
-## *Task 1 - Dostęp do serwera z perspektywy użytkownika aplikacji webowej*
-W kontenerze uruchomiona jest aplikacja webowa. Znając jej podatność omówioną podczas prezentacji spróbuj, za pomocą preparacji url-a, dokonać araku typu RCE, czyli z widoku interfejsu użytkownika wykonać kod po stronie serwera  (np. podawany podczas prezentacji przykład wyrażenia 7*7). 
+## *Zadanie1. - Dostęp do serwera z perspektywy użytkownika aplikacji webowej*
+Wewnątrz kontenera jest uruchomiona źle skonfigurowana aplikacja webowa. Za pomocą odpowiednio zmodyfikowanego adresu URL spróbuj wykonać atak typu Remote Code Execution, czyli wywołać kod po stronie serwera np. proste mnożenie 2*2. 
 <br />
-> Jeżeli w wyniku wcześniejszego przykładu otrzymasz wynik 49
-> to możemy przejść dalej.
-
+Jeżeli w wyniku wykonania przykładu zobaczysz rezultat 4, możesz przejść dalej.
  <br />
  
-<!-- Teraz przyjrzyj się poniższemu wyrażeniu napisanym w języku Python. Jednak najpierw użyj w konsoli programu ``hack.py``, który jest dołączony do paczki z repozytorium i liczbę, którą znalazłeś wpisz zamiast ``<Liczba_Którą_Znalazłeś>``. 
+ <!-- W konsoli możesz skorzystać z programu `hack.py` (znajduje się w repozytorium). Wstaw do niego liczbę, którą znalazłeś zamiast `<Liczba_Którą_Znalazłeś>`.
+Jeśli ciekawi Cię, jak to działa, poniższy kod w sprytny sposób przedostaje się z obiektu string przez moduł warnings i klasę WarningMessage do modułu os, który pozwala uruchamiać komendy systemowe.
 
-> Jeżeli cię to ciekawi to poniższy kod w sprytny sposób przedostaje się
-> z obiektu napisu przez moduł ``warnings`` i klasę ``WarningMessage``
-> do modułu os, który posiada metody pozwalające na uruchamianie komend systemowych. <br />
-> 
-<br />
-
-```
+scss
+Kopiuj
 "baiim".__class__.__base__.__subclasses__()[<Liczba_Którą_Znalazłeś>].__init__.__globals__['sys'].modules['os'].popen(<Twoja_Komenda>).read()
-```
-<br />
 Spróbuj wyświetlić strukturę plików w katalogu aplikacji na serwerze.
 
-**Odpowiedź** - wyślij zrzut ekranu, który pokaże wylistowane w aplikacji wszystkie pliki i katalogi z  katalogu aplikacji na serwerze razem z użytą komendą. -->
+Odpowiedź - wyślij zrzut ekranu z listą plików i folderów w katalogu aplikacji oraz komendą, której użyłeś. -->
 
 <br />
 
