@@ -21,15 +21,15 @@ Jeżeli już posiadasz repozytorium na dysku przejdź do katalogu, w którym zna
 
 1. Build - zbuduj kontener (może zająć chwilę w zależności od szybkości łącza):
 	```bash: 
-	docker build -t ubuntu-dind .
+	docker build -t ubuntu-zetor .
 	```
 2. Run - uruchom kontener w tle:
 	```bash: 
-	docker run -d -p 5000:5000 --privileged --hostname ubuntu-dind --name ubuntu-dind ubuntu-dind
+	docker run -d -p 5000:5000 --privileged --hostname ubuntu-zetor --name ubuntu-zetor ubuntu-zetor
 	```
 3. Enter - wejdź do kontenera:
 	```bash: 
-	docker exec -itu adam ubuntu-dind bash
+	docker exec -itu ursus ubuntu-zetor bash
 	```
 
 > ***TIP** - w przypadku problemów -> zrestartuj kontener*
@@ -69,7 +69,7 @@ Spróbuj wyświetlić strukturę plików w katalogu aplikacji na serwerze.
 
 Ucieczkę z kontenera umożliwia nam złe skonfigurowanie kontenera przez osobę, która go tworzyła. Wciel się w taką osobę: <br />
 
-1. Spróbuj zmienić użytkownika na root-a (nie powinieneś mieć takiej możliwości - powinieneś być na koncie użytkownika ``adam``) {**PE**}: 
+1. Spróbuj zmienić użytkownika na root-a (nie powinieneś mieć takiej możliwości - powinieneś być na koncie użytkownika ``ursus``) {**PE**}: 
 	```bash
 	su root
 	```
@@ -94,7 +94,7 @@ Ucieczkę z kontenera umożliwia nam złe skonfigurowanie kontenera przez osobę
 
 	1.  
 		```
-		docker run --rm -it --name kontener-adama --hostname ubuntu-by-adam --privileged ubuntu:18.04 bash
+		docker run --rm -it --name kontener-ursus --hostname ubuntu-ursus --privileged ubuntu:18.04 bash
 		```
 	2. 
 		```
@@ -114,7 +114,7 @@ Ucieczkę z kontenera umożliwia nam złe skonfigurowanie kontenera przez osobę
 ---
 
 6. Zacznijmy od pierwszego scenariusza. 
-	Będąc na użytkowniku **adam** uruchom kontener {**DE**}. <br />
+	Będąc na użytkowniku **ursus** uruchom kontener {**DE**}. <br />
 	Teraz jesteś wewnątrz swojego kontenera, który przed chwilą stworzyłeś. Możesz to 	sprawdzić za pomocą komend ``whoami`` oraz ``hostname``.
 	<br />
 Przykładowy ScreenShot znajduje się poniżej:
@@ -133,7 +133,7 @@ Przykładowy ScreenShot znajduje się poniżej:
 	mount /dev/sdc /mnt/share
 	```
 ---
-Domyślnie polecenie mount nadaje ci prawa do zapisu i odczytu, ale jeśli wystąpiłby przykładowo taki komunikat zmień partycję dysku(chociaż i tak już udało ci się zrobić więcej niż pozwalały na to uprawnienia użytkownika adam):
+Domyślnie polecenie mount nadaje ci prawa do zapisu i odczytu, ale jeśli wystąpiłby przykładowo taki komunikat zmień partycję dysku(chociaż i tak już udało ci się zrobić więcej niż pozwalały na to uprawnienia użytkownika ursus):
 ![image3](https://github.com/norka02/Docker-Escape/assets/94318576/d1cd3e07-3672-4086-bb40-2b86b14bceb5) <br />
  Listę partycji możesz uzyskać za pomocą polecenia: <br />
 ```bash
@@ -195,7 +195,7 @@ Posiadając całą wiedzę zdobytą podczas prezentacji oraz poprzednich zadań 
 **Odpowiedź** - wyślij widoczną komendę, która tworzy **Bezpieczny Kontener**. <br />
 
 
-# Instrukcja: Używanie Docker API na Windows z Docker Desktop
+# TASK 5
 
 Poniżej znajduje się przykład konfiguracji środowiska na Windows, zakładając, że korzystasz z Docker Desktop (który działa przez named pipe lub może być skonfigurowany na port TCP). Standardowo na Windows nie ma pliku `/var/run/docker.sock`. Zamiast tego Docker Desktop może wystawić daemon na adresie `tcp://localhost:2375` (należy to włączyć w ustawieniach Docker Desktop: **Expose daemon on tcp://localhost:2375 without TLS**). Dzięki temu można korzystać z `curl` do komunikacji z API Dockera.
 
