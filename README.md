@@ -161,13 +161,8 @@ Będąc rootem możesz swobodnie przeglądać i modyfikować system. Odnajdź uk
 
 **Odpowiedź** - prześlij zmodyfikowaną flagę (z dopisanym tekstem) oraz ścieżkę do odnalezionego katalogu.  <br />
 
-## *Task 4 - Tworzenie Bezpiecznego Kontenera*
-Posiadając całą wiedzę zdobytą podczas prezentacji oraz poprzednich zadań zastanów się w jaki sposób możesz zabezpieczyć kontener przed różnymi wektorami ataków. Stwórz kontener, który spełnia wszystkie best-practice dot. bezpiecznego tworzenia kontenera Dockera.  <br />
 
-**Odpowiedź** - wyślij widoczną komendę, która tworzy **Bezpieczny Kontener**. <br />
-
-
-# TASK 5
+# Zadanie4.
 
 Poniżej znajduje się przykład konfiguracji środowiska na Windows, zakładając, że korzystasz z Docker Desktop (który działa przez named pipe lub może być skonfigurowany na port TCP). Standardowo na Windows nie ma pliku `/var/run/docker.sock`. Zamiast tego Docker Desktop może wystawić daemon na adresie `tcp://localhost:2375` (należy to włączyć w ustawieniach Docker Desktop: **Expose daemon on tcp://localhost:2375 without TLS**). Dzięki temu można korzystać z `curl` do komunikacji z API Dockera.
 
