@@ -1,4 +1,4 @@
-# Docker Escape
+![image](https://github.com/user-attachments/assets/f308468c-2b44-4073-b5a5-7b4d80f5b8e6)# Docker Escape
 ***W tym projekcie prezentujemy przykładową lukę bezpieczeństwa, która umożliwia wydostanie się z kontenera Dockera uruchamiającego aplikację webową.*** <br />
 <br />
 Poniżej znajdują się instrukcje dotyczące tworzenia i uruchamiania kontenera, a także wskazówki pozwalające na tzw. “ucieczkę” z niego.
@@ -166,7 +166,8 @@ Będąc rootem możesz swobodnie przeglądać i modyfikować system. Odnajdź uk
 
 Poniżej znajduje się przykład konfiguracji środowiska na Windows, zakładając, że korzystasz z Docker Desktop (który działa przez named pipe lub może być skonfigurowany na port TCP). Standardowo na Windows nie ma pliku `/var/run/docker.sock`. Zamiast tego Docker Desktop może wystawić daemon na adresie `tcp://localhost:2375` (należy to włączyć w ustawieniach Docker Desktop: **Expose daemon on tcp://localhost:2375 without TLS**). Dzięki temu można korzystać z `curl` do komunikacji z API Dockera.
 
-![image](https://github.com/user-attachments/assets/4a395865-719a-4a64-a20c-bfafa3d971ab)
+![Zrzut ekranu 2025-01-19 111459](https://github.com/user-attachments/assets/d4300c52-fb18-4b6d-b37f-b1d2f8d02fe7)
+
 
 ## Założenia
 - Docker Desktop na Windows jest skonfigurowany tak, aby umożliwić dostęp do Docker Daemon przez `http://localhost:2375`.
