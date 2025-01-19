@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 RUN echo 'root:3566bf5ea52fec6eaf5d8bc513ea7659' | chpasswd
 
-RUN useradd -ms /bin/bash adam
+RUN useradd -ms /bin/bash ursus
 
 # Dodaj instalację wymagań przed skopiowaniem aplikacji
 COPY app/requirements.txt /app/requirements.txt
@@ -22,7 +22,7 @@ COPY app/ /app
 
 RUN chown root:root -R /app && \
     chmod 770 -R /app && \
-    usermod -aG docker adam
+    usermod -aG docker ursus
 
 RUN echo '#!/bin/sh\n\
 dockerd &\n\
