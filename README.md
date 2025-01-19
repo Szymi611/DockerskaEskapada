@@ -166,6 +166,8 @@ Będąc rootem możesz swobodnie przeglądać i modyfikować system. Odnajdź uk
 
 Poniżej znajduje się przykład konfiguracji środowiska na Windows, zakładając, że korzystasz z Docker Desktop (który działa przez named pipe lub może być skonfigurowany na port TCP). Standardowo na Windows nie ma pliku `/var/run/docker.sock`. Zamiast tego Docker Desktop może wystawić daemon na adresie `tcp://localhost:2375` (należy to włączyć w ustawieniach Docker Desktop: **Expose daemon on tcp://localhost:2375 without TLS**). Dzięki temu można korzystać z `curl` do komunikacji z API Dockera.
 
+![image](https://github.com/user-attachments/assets/4a395865-719a-4a64-a20c-bfafa3d971ab)
+
 ## Założenia
 - Docker Desktop na Windows jest skonfigurowany tak, aby umożliwić dostęp do Docker Daemon przez `http://localhost:2375`.
 - Masz zainstalowany `curl` dla Windows (od Windows 10 w PowerShell `curl` to alias do `Invoke-WebRequest`, możesz także użyć `curl.exe` z paczki binarnej).
